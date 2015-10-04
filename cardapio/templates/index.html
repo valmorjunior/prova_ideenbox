@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Cardápio Online</title>
+
+    <!-- Bootstrap -->
+    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body style="padding: 10px">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+{#                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">#}
+{#                    <span class="sr-only">Toggle navigation</span>#}
+{#                    <span class="icon-bar"></span>#}
+{#                    <span class="icon-bar"></span>#}
+{#                    <span class="icon-bar"></span>#}
+{#                </button>#}
+                <a class="navbar-brand" href="{% url 'index' %}">Cardápio Online</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <form action="." method="get" class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <select class="form-control" id="id_valor" name="valor">
+                            <option value=""></option>
+                            <option value="menor-preco">Menor Preço</option>
+                            <option value="maior-preco">Maior Preço</option>
+                        </select>
+{#                        <select class="form-control" id="id_categoria" name="categoria">#}
+{#                            <option value=""></option>#}
+{#                            {% for categoria in itemcardapio_list.categoria %}#}
+{#                                <option value="{{ categoria.nome }}">{{ categoria.nome|upper }}</option>#}
+{#                            {% endfor %}#}
+{#                        </select>#}
+                        <input type="text" id="id_busca" name="busca" class="form-control" placeholder="Digite nome do prato">
+                    </div>
+                    <button type="submit" class="btn btn-default">BUSCAR</button>
+                </form>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="row">
+        {% for item in itemcardapio_list %}
+            {% ifchanged item.categoria %}<div class="col-sm-12 col-md-12"><h3>{{ item.categoria|upper }}</h3></div>{% endifchanged %}
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h3>{{ item.nome }} <span class="badge">{{ item.categoria }}</span></h3>
+                        <p>Preço R$ <span class="badge">{{ item.valor }}</span></p>
+                        <p>Ingredientes do Prato:<br>{% for ingrediente in item.ingredienteitem_set.all %}{{ ingrediente.ingrediente.nome }}, {% endfor %}</p>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{{ STATIC_URL }}js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+  </body>
+</html>
